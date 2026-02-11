@@ -10,6 +10,20 @@ const JobPage = () => {
     console.log(JobPage);
   };
 
+  useEffect(() => {
+    const fetchJobs = async () => {
+      const response = await fetch(`/api/jobs/${id}`);
+      console.log(`/api/jobs/${id}`);
+      const json = await response.json();
+
+      if (response.ok) {
+        setJob(json);
+      }
+    };
+
+    fetchJobs();
+  }, [id]);
+
   if (!job) {
     return <div>Loading...</div>;
   }
