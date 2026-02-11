@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AddJobPage = () => {
+  const apiUrl = "/api/jobs";
   const [title, setTitle] = useState("");
   const [type, setType] = useState("Full-Time");
   const [location, setLocation] = useState("");
@@ -15,7 +16,41 @@ const AddJobPage = () => {
 
   const submitForm = (e) => {
     e.preventDefault();
-    console.log("AddJobPage");
+    const job = {
+      title,
+      type,
+      location,
+      description,
+      salary,
+      company: {
+        name: companyName,
+        contactEmail,
+        contactPhone,
+      },
+    };
+
+    const createJob = async () => {
+      try {
+        const response = await fetch(apiUrl, {
+          method: "POST", // HTTP method for creating resources
+          body: JSON.stringify(job), // Converts JavaScript object to JSON string
+          headers: {
+            "Content-Type": "application/json", // Specifies the content type as JSON
+          },
+        });
+        console.log(job);
+        if (!response.ok) {
+          throw new Error("Failed to add a new job"); // Handle non-successful responses
+        }
+
+        const json = await response.json(); // Parse the response to a JavaScript object
+        console.log("New Job added:", json);
+      } catch (error) {
+        console.error("Error adding job:", error.message);
+      }
+    };
+
+    createJob();
   };
 
   return (
