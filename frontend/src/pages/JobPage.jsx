@@ -7,7 +7,19 @@ const JobPage = () => {
   const navigate = useNavigate();
 
   const deleteJob = async () => {
-    console.log(JobPage);
+    try {
+      const response = await fetch(`/api/jobs/${id}`, {
+        method: "DELETE", // HTTP method for deletion
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete the job");
+      }
+
+      console.log("Job deleted successfully");
+    } catch (error) {
+      console.error("Error deleting job:", error.message);
+    }
   };
 
   useEffect(() => {
