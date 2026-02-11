@@ -44,7 +44,42 @@ const EditJobPage = () => {
 
   const submitForm = (e) => {
     e.preventDefault();
-    console.log("EditJobPage");
+    
+    const job = {
+      title,
+      type,
+      location,
+      description,
+      salary,
+      company: {
+        name: companyName,
+        contactEmail,
+        contactPhone,
+      },
+    };
+
+    const editJob = async () => {
+      try {
+        const response = await fetch(`/api/jobs/${id}`, {
+          method: "PUT", // HTTP method for creating resources
+          body: JSON.stringify(job), // Converts JavaScript object to JSON string
+          headers: {
+            "Content-Type": "application/json", // Specifies the content type as JSON
+          },
+        });
+        console.log(job);
+        if (!response.ok) {
+          throw new Error("Failed to add a new job"); // Handle non-successful responses
+        }
+
+        const json = await response.json(); // Parse the response to a JavaScript object
+        console.log("Job updated:", json);
+      } catch (error) {
+        console.error("Error adding job:", error.message);
+      }
+    };
+
+    editJob();
   };
 
   const cancelEdit = () => {
